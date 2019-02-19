@@ -1,8 +1,31 @@
 version: '3.4'
 
 services:
-  webapiservice:
-    image: ${DOCKER_REGISTRY-}webapiservice
+  apigw-base:
+    image: ${DOCKER_REGISTRY-}apigwbase
     build:
       context: .
-      dockerfile: WebApIService/Dockerfile
+      dockerfile: ApiGateway/ApiGw-Base/Dockerfile
+    depends_on:
+        - botflowgraph-webapi
+        - botflowgraph-identity
+  botflowgraph-identity:
+    image: ${DOCKER_REGISTRY-}botflowgraphidentity
+    build:
+      context: .
+      dockerfile: src/Services/BotFlowGraph.Identity/Dockerfile
+    depends_on:
+        - sqlserver
+  botflowgraph-webapi:
+    image: ${DOCKER_REGISTRY-}botflowgraphwebapi
+    build:
+      context: .
+      dockerfile: src/Services/BotFlowGraph.WebApi/Dockerfile
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server
+    environment:
+      SA_PASSWORD: "yourStrong(!)Password"
+      ACCEPT_EULA: "Y"
+
+
+
