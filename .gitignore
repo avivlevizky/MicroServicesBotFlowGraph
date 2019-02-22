@@ -258,3 +258,9 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+
+
+
+
+#ignore bot web project
+\src\Web
