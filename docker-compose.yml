@@ -5,22 +5,24 @@ services:
     image: ${DOCKER_REGISTRY-}apigwbase
     build:
       context: .
-      dockerfile: ApiGateway/ApiGw-Base/Dockerfile
+      dockerfile: src/ApiGateway/ApiGw-Base/Dockerfile
     depends_on:
         - botflowgraph-webapi
         - botflowgraph-identity
   botflowgraph-identity:
-    image: ${DOCKER_REGISTRY-}botflowgraphidentity
+    image: ${DOCKER_REGISTRY-}botflowgraph.identity
     build:
       context: .
       dockerfile: src/Services/BotFlowGraph.Identity/Dockerfile
     depends_on:
         - sqlserver
   botflowgraph-webapi:
-    image: ${DOCKER_REGISTRY-}botflowgraphwebapi
+    image: ${DOCKER_REGISTRY-}botflowgraph.webapi
     build:
       context: .
       dockerfile: src/Services/BotFlowGraph.WebApi/Dockerfile
+  botflowgraph-angular-client:
+    image: botflowgraph.client:dev
   sqlserver:
     image: mcr.microsoft.com/mssql/server
     environment:

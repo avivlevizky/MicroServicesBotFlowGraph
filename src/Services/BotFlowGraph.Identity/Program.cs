@@ -25,7 +25,6 @@ namespace BotFlowGraph.Identity
                 var config = host.Services.GetRequiredService<IConfiguration>();
                 var connectionString = config.GetConnectionString("DefaultConnection");
                 SeedData.EnsureSeedData(connectionString);
-                return;
             }
 
             host.Run();

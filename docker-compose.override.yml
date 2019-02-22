@@ -30,6 +30,9 @@ services:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
     ports:
       - "54231:80"
+  botflowgraph-angular-client:
+    ports:
+      - "80:80"
   sqlserver:
     ports:
       - "1434:1433"
