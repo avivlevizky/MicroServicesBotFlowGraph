@@ -34,7 +34,7 @@ services:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=12345678
-      - MONGO_INITDB_DATABASE=admin
+      - MONGO_INITDB_DATABASE=BotDb
     ports:
       - "27017:27017" 
   

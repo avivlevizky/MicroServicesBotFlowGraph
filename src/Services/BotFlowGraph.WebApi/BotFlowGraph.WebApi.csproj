@@ -23,4 +23,9 @@
   <ItemGroup>
     <Folder Include="Cert\" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Class Libraries\Contracts\Contracts.csproj" />
+    <ProjectReference Include="..\..\Class Libraries\MongoDataAccess\MongoDataAccess.csproj" />
+  </ItemGroup>
 </Project>

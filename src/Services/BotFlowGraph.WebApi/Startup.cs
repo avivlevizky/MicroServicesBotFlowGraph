@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using IdentityServer4.AccessTokenValidation;
+using MongoDataAccess;
 
 namespace WebApIService
 {
@@ -28,7 +29,7 @@ namespace WebApIService
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvcCore().AddAuthorization().AddJsonFormatters();
-
+            services.AddLogging();
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",
@@ -46,13 +47,15 @@ namespace WebApIService
                     options.ApiName = "BotWebAPI";
                 });
 
+            services.AddScoped<BotMongoDal>(); 
 
 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
