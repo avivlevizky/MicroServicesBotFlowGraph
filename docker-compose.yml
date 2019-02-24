@@ -23,11 +23,12 @@ services:
       dockerfile: src/Services/BotFlowGraph.WebApi/Dockerfile
   botflowgraph-angular-client:
     image: botflowgraph.client:dev
+  mongo-db:
+    image: mongo:latest
   sqlserver:
     image: mcr.microsoft.com/mssql/server
-    environment:
-      SA_PASSWORD: "yourStrong(!)Password"
-      ACCEPT_EULA: "Y"
+
+
 
 
 

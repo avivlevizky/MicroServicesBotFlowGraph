@@ -9,30 +9,32 @@ services:
     ports:
       - "54232:80"
       - "44328:443"
-    volumes:
-      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
-      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
   botflowgraph-identity:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://0.0.0.0:443;http://0.0.0.0:80
-    volumes:
-      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
-      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
     ports:
       - "44330:443"
   botflowgraph-webapi:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=https://0.0.0.0:443;http://0.0.0.0:80
-    volumes:
-      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
-      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ASPNETCORE_URLS=https://0.0.0.0:443;http://0.0.0.0:80     
     ports:
       - "54231:80"
   botflowgraph-angular-client:
     ports:
       - "80:80"
   sqlserver:
+    environment:
+      - SA_PASSWORD="777888123456"
+      - ACCEPT_EULA="Y"
     ports:
-      - "1434:1433"
+      - "1433:1433"  
+  mongo-db:
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=12345678
+      - MONGO_INITDB_DATABASE=admin
+    ports:
+      - "27017:27017" 
+  

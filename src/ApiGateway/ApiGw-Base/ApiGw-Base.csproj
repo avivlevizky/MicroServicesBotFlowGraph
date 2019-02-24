@@ -15,4 +15,7 @@
     <PackageReference Include="Ocelot" Version="13.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Cert\" />
+  </ItemGroup>
 </Project>

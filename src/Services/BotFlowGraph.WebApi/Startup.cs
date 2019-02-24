@@ -62,7 +62,7 @@ namespace WebApIService
                 app.UseHsts();
             }
             app.UseAuthentication();
-            //app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
             app.UseMvc();
         }
     }
