@@ -8,14 +8,13 @@ using MongoDB.Driver;
 
 namespace MongoDataAccess
 {
-    public class BotMongoDalBase
+    public abstract class BotMongoDalBase
     {
-        protected readonly string ConnString;
         private IMongoDbConnectionConfig _mongoDbConfig;
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MongoDalBase"/> class.
-        /// </summary>
-        public BotMongoDalBase(ILogger logger, IConfiguration Configuration)
+        protected readonly ILogger<BotMongoDalBase> logger;
+
+
+        public BotMongoDalBase(ILogger<BotMongoDalBase> logger, IConfiguration Configuration)
         {       
             _mongoDbConfig = new MongoDbConnectionConfig
             {

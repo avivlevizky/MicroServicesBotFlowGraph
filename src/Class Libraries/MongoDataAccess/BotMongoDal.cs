@@ -1,4 +1,5 @@
 ﻿using Contracts.Enums;
+using Contracts.Interfaces;
 using Contracts.Model;
 using Contracts.Model.MongoDbModel;
 using Microsoft.Extensions.Configuration;
@@ -14,10 +15,8 @@ using System.Threading.Tasks;
 
 namespace MongoDataAccess
 {
-    public class BotMongoDal : BotMongoDalBase
+    public class BotMongoDal : BotMongoDalBase, IBotMongoDal
     {
-        private readonly ILogger _logger;
-
 
         static BotMongoDal()
         {
@@ -27,10 +26,8 @@ namespace MongoDataAccess
             }
         }
 
-        public BotMongoDal(ILogger logger, IConfiguration Configuration) : base(logger, Configuration)
+        public BotMongoDal(ILogger<BotMongoDal> logger, IConfiguration Configuration) : base(logger, Configuration)
         {
-            _logger = logger;
-
         }
 
 
@@ -44,7 +41,7 @@ namespace MongoDataAccess
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, string.Empty);
+                logger.LogError(ex, string.Empty);
                 return null;
             }
         }
@@ -61,7 +58,7 @@ namespace MongoDataAccess
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, string.Empty);
+                logger.LogError(ex, string.Empty);
                 return null;
             }
         }
@@ -87,7 +84,7 @@ namespace MongoDataAccess
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, string.Empty);
+                logger.LogError(ex, string.Empty);
                 return false;
             }
 
@@ -123,7 +120,7 @@ namespace MongoDataAccess
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, string.Empty);
+                logger.LogError(ex, string.Empty);
                 return false;
             }
         }

@@ -13,27 +13,31 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using IdentityServer4.AccessTokenValidation;
 using MongoDataAccess;
+using Contracts.Interfaces;
 
 namespace WebApIService
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IServiceProvider serviceProvider)
         {
             Configuration = configuration;
+            ServiceProvider = serviceProvider;
         }
 
         public IConfiguration Configuration { get; }
+        public IServiceProvider ServiceProvider { get; }
+
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvcCore().AddAuthorization().AddJsonFormatters();
-            services.AddLogging();
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",
-                    builder => builder.AllowAnyOrigin()
+                    builder => builder
+                    .AllowAnyOrigin()
                     .AllowAnyMethod()
                     .AllowAnyHeader()
                     .AllowCredentials());
@@ -47,13 +51,14 @@ namespace WebApIService
                     options.ApiName = "BotWebAPI";
                 });
 
-            services.AddScoped<BotMongoDal>(); 
+            services.AddLogging();
 
+            services.AddSingleton<IBotMongoDal, BotMongoDal>(_ => new BotMongoDal(_.GetService<ILogger<BotMongoDal>>(), _.GetService<IConfiguration>()));
 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
 
             if (env.IsDevelopment())
@@ -64,9 +69,11 @@ namespace WebApIService
             {
                 app.UseHsts();
             }
-            app.UseAuthentication();
-            app.UseHttpsRedirection();
+            app.UseCors("CorsPolicy");
+            //app.UseAuthentication();
+            //app.UseHttpsRedirection();
             app.UseMvc();
+
         }
     }
 }

@@ -21,6 +21,7 @@ services:
       - ASPNETCORE_URLS=https://0.0.0.0:443;http://0.0.0.0:80     
     ports:
       - "54231:80"
+      - "44331:443"
   botflowgraph-angular-client:
     ports:
       - "80:80"
@@ -34,7 +35,7 @@ services:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=12345678
-      - MONGO_INITDB_DATABASE=BotDb
+      - MONGO_INITDB_DATABASE=admin
     ports:
       - "27017:27017" 
   

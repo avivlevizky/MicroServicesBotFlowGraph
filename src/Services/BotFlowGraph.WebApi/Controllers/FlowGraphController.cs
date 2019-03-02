@@ -1,4 +1,5 @@
-﻿using Contracts.Model.MongoDbModel;
+﻿using Contracts.Interfaces;
+using Contracts.Model.MongoDbModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MongoDataAccess;
@@ -14,9 +15,9 @@ namespace BotFlowGraph.WebApi.Controllers
     public class FlowGraphController : ControllerBase
     {
         private readonly ILogger _logger;
-        private readonly BotMongoDal _botMongoDal;
+        private readonly IBotMongoDal _botMongoDal;
 
-        public FlowGraphController(ILogger<FlowGraphController> logger, BotMongoDal botMongoDal)
+        public FlowGraphController(ILogger<FlowGraphController> logger, IBotMongoDal botMongoDal)
         {
             _logger = logger;
             _botMongoDal = botMongoDal;
@@ -34,7 +35,7 @@ namespace BotFlowGraph.WebApi.Controllers
 
         // POST: api/FlowGraph
         // For create operation
-        [HttpPost("{id}")]
+        [HttpPost]
         public async Task<bool> Post([FromBody]FlowGraphItem value)
         {
             try
@@ -43,6 +44,7 @@ namespace BotFlowGraph.WebApi.Controllers
             }
             catch (Exception e)
             {
+                _logger.LogError(e, string.Empty);
                 return false;
             }
 
@@ -61,6 +63,7 @@ namespace BotFlowGraph.WebApi.Controllers
             }
             catch (Exception e)
             {
+                _logger.LogError(e, string.Empty);
                 return false;
             }
         }

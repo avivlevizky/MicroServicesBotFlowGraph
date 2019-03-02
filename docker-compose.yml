@@ -21,8 +21,13 @@ services:
     build:
       context: .
       dockerfile: src/Services/BotFlowGraph.WebApi/Dockerfile
+    depends_on:
+        - mongo-db
   botflowgraph-angular-client:
     image: botflowgraph.client:dev
+    depends_on:
+        - botflowgraph-webapi
+        - botflowgraph-identity
   mongo-db:
     image: mongo:latest
   sqlserver:

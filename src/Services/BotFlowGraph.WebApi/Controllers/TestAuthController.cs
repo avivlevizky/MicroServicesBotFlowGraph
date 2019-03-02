@@ -11,7 +11,7 @@ namespace BotFlowGraph.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthController : ControllerBase
+    public class TestAuthController : ControllerBase
     {
        
         [HttpGet]
