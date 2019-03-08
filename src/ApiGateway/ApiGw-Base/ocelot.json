@@ -10,14 +10,14 @@
         }
       ],
       "UpstreamPathTemplate": "/api/{controller}",
-      "UpstreamHttpMethod": [ "POST", "PUT", "GET" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "IdentityApiKey",
-        "AllowedScopes": []
-      }
+      "UpstreamHttpMethod": [ "POST", "PUT", "GET" ]
+      //"AuthenticationOptions": {
+      //  "AuthenticationProviderKey": "IdentityApiKey",
+      //  "AllowedScopes": []
+      //}
     },
     {
-      "DownstreamPathTemplate": "/.well-known/openid-configuration",
+      "DownstreamPathTemplate": "/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -25,10 +25,12 @@
           "Port": 80
         }
       ],
-      "UpstreamPathTemplate": "/identityService/discovery"
+      "UpstreamPathTemplate": "/identityService/{everything}"
     }
   ],
   "GlobalConfiguration": {
-   
   }
 }
+
+
+// https://localhost:44328/identityService/.well-known/openid-configuration

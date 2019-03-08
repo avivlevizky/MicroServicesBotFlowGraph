@@ -30,7 +30,7 @@ namespace BotFlowGraph.WebApi.Controllers
             var gatewayClient = new HttpClient();
 
             gatewayClient.SetBearerToken(tokenResponse.AccessToken);
-            var response = await gatewayClient.GetAsync("http://apigw-base/api/values");
+            var response = await gatewayClient.GetAsync("http://apigw-base/identityService/discovery");
             return new JsonResult(response);
         }
 

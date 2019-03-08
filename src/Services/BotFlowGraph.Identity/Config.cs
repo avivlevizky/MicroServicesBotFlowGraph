@@ -1,4 +1,5 @@
-﻿using IdentityServer4.Models;
+﻿using IdentityServer4;
+using IdentityServer4.Models;
 using System.Collections.Generic;
 
 public static class Config
@@ -8,7 +9,8 @@ public static class Config
         return new IdentityResource[]
         {
                 new IdentityResources.OpenId(),
-                new IdentityResources.Profile(),
+                new IdentityResources.Profile()
+
         };
     }
 
@@ -16,11 +18,7 @@ public static class Config
     {
         return new ApiResource[]
         {
-                new ApiResource("BotWebAPI"),
-                new ApiResource("api")
-
-
-
+                new ApiResource("BotWebAPI")
         };
     }
 
@@ -50,7 +48,7 @@ public static class Config
                     FrontChannelLogoutUri = "http://localhost:5001/signout-oidc",
                     PostLogoutRedirectUris = { "http://localhost:5001/signout-callback-oidc" },
                     AllowOfflineAccess = true,
-                    AllowedScopes = { "openid", "profile", "ApiGw" }
+                    AllowedScopes = { "BotWebAPI" }
                 },
 
                 // SPA client using implicit flow
@@ -58,23 +56,24 @@ public static class Config
                 {
                     ClientId = "spa",
                     ClientName = "SPA Client",
-                    ClientUri = "http://identityserver.io",
+                    ClientUri = "https://localhost:4200",
 
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
 
                     RedirectUris =
                     {
-                        "http://localhost:5002/index.html",
-                        "http://localhost:5002/callback.html",
-                        "http://localhost:5002/silent.html",
-                        "http://localhost:5002/popup.html",
+                        "https://localhost:4200/callback",
                     },
+                    PostLogoutRedirectUris = { "https://localhost:44329/signout-callback-oidc" },
+                    AllowedCorsOrigins = { "https://localhost:4200" },
+                    AllowedScopes = 
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        "BotWebAPI"
 
-                    PostLogoutRedirectUris = { "http://localhost:5002/index.html" },
-                    AllowedCorsOrigins = { "http://localhost:5002" },
-
-                    AllowedScopes = { "openid", "profile", "api1" }
+                    }
                 }
             };
     }

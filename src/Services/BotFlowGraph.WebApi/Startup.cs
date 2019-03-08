@@ -37,7 +37,7 @@ namespace WebApIService
             {
                 options.AddPolicy("CorsPolicy",
                     builder => builder
-                    .AllowAnyOrigin()
+                    .WithOrigins("https://localhost:4200")
                     .AllowAnyMethod()
                     .AllowAnyHeader()
                     .AllowCredentials());
@@ -70,7 +70,7 @@ namespace WebApIService
                 app.UseHsts();
             }
             app.UseCors("CorsPolicy");
-            //app.UseAuthentication();
+            app.UseAuthentication();
             //app.UseHttpsRedirection();
             app.UseMvc();
 

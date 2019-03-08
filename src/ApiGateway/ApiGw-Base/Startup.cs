@@ -27,20 +27,29 @@ namespace ApiGw_Base
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddOcelot(_cfg);
-            var authenticationProviderKey = "IdentityApiKey";
+            //var authenticationProviderKey = "IdentityApiKey";
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder
+                    .WithOrigins("https://localhost:4200")
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials());
+            });
 
 
-
-            services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
-                .AddIdentityServerAuthentication(authenticationProviderKey, options =>
-                {
-                    // base-address of your identityserver
-                    options.Authority = "http://botflowgraph-identity";
-                    options.RequireHttpsMetadata = false;
-                    // name of the API resource
-                    options.ApiName = "BotWebAPI";
-                    options.SupportedTokens = SupportedTokens.Both;
-                });
+            //services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
+            //.AddIdentityServerAuthentication(authenticationProviderKey, options =>
+            //{
+            //    // base-address of your identityserver
+            //    options.Authority = "http://botflowgraph-identity";
+            //    options.RequireHttpsMetadata = false;
+            //    // name of the API resource
+            //    options.ApiName = "BotWebAPI";
+            //    options.SupportedTokens = SupportedTokens.Both;
+            //});
 
 
 
@@ -57,7 +66,10 @@ namespace ApiGw_Base
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseAuthentication();
+            app.UseCors("CorsPolicy");
+
+            // app.UseHttpsRedirection();
+            // app.UseAuthentication();
             app.UseOcelot().Wait();
         }
 

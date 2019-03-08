@@ -28,6 +28,16 @@ namespace BotFlowGraph.Identity
 
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials());
+            });
+
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
@@ -36,11 +46,12 @@ namespace BotFlowGraph.Identity
             var keyFilePassword = Configuration.GetSection("SigninKeyCredentials").GetValue<string>("KeyFilePassword");
             var cert = new X509Certificate2(keyFilePath, keyFilePassword);
 
-            services.AddIdentityServer()
+            services.AddIdentityServer(x => x.IssuerUri = @"https://localhost:44329")
                 //.AddDeveloperSigningCredential()
                 .AddSigningCredential(cert)
                 .AddInMemoryApiResources(Config.GetApis())
                 .AddInMemoryClients(Config.GetClients())
+                .AddInMemoryIdentityResources(Config.GetIdentityResources())
                 .AddAspNetIdentity<ApplicationUser>();
 
         }
@@ -57,7 +68,7 @@ namespace BotFlowGraph.Identity
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-
+            app.UseCors("CorsPolicy");
             app.UseStaticFiles();
             app.UseIdentityServer();
             app.UseHttpsRedirection();

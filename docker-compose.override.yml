@@ -14,23 +14,17 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://0.0.0.0:443;http://0.0.0.0:80
     ports:
-      - "44330:443"
+      - "44329:443"
   botflowgraph-webapi:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://0.0.0.0:443;http://0.0.0.0:80     
-    ports:
-      - "54231:80"
-      - "44331:443"
-  botflowgraph-angular-client:
-    ports:
-      - "80:80"
   sqlserver:
     environment:
-      - SA_PASSWORD="777888123456"
-      - ACCEPT_EULA="Y"
+      - SA_PASSWORD=Jko3va-D9821jhsvGD
+      - ACCEPT_EULA=Y
     ports:
-      - "1433:1433"  
+      - "1434:1433"  
   mongo-db:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root
@@ -38,4 +32,8 @@ services:
       - MONGO_INITDB_DATABASE=admin
     ports:
       - "27017:27017" 
+  spa-clinet:
+    ports:
+      - "443:443" 
+
   

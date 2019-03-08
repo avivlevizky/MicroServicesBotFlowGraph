@@ -1,5 +1,6 @@
 ﻿using Contracts.Interfaces;
 using Contracts.Model.MongoDbModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MongoDataAccess;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace BotFlowGraph.WebApi.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class FlowGraphController : ControllerBase
