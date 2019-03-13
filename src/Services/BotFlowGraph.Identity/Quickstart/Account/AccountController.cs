@@ -1,8 +1,6 @@
-﻿// Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
-
+﻿
 using BotFlowGraph.Identity.Models;
+using Contracts.Interfaces;
 using IdentityModel;
 using IdentityServer4.Events;
 using IdentityServer4.Extensions;
@@ -13,9 +11,11 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
 namespace IdentityServer4.Quickstart.UI
@@ -30,6 +30,9 @@ namespace IdentityServer4.Quickstart.UI
         private readonly IClientStore _clientStore;
         private readonly IAuthenticationSchemeProvider _schemeProvider;
         private readonly IEventService _events;
+        private readonly IEmailSender _emailSender;
+        private readonly IBotMongoDal _botMongoDal;
+
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
@@ -37,7 +40,9 @@ namespace IdentityServer4.Quickstart.UI
             IIdentityServerInteractionService interaction,
             IClientStore clientStore,
             IAuthenticationSchemeProvider schemeProvider,
-            IEventService events)
+            IEventService events,
+            IEmailSender emailSender,
+            IBotMongoDal botMongoDal)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -45,6 +50,8 @@ namespace IdentityServer4.Quickstart.UI
             _clientStore = clientStore;
             _schemeProvider = schemeProvider;
             _events = events;
+            _emailSender = emailSender;
+            _botMongoDal = botMongoDal;
         }
 
         /// <summary>
@@ -56,13 +63,83 @@ namespace IdentityServer4.Quickstart.UI
             // build a model so we know what to show on the login page
             var vm = await BuildLoginViewModelAsync(returnUrl);
 
-            if (vm.IsExternalLoginOnly)
+            return View(vm);
+        }
+
+        [HttpGet]
+        public IActionResult Register(string returnUrl)
+        {
+            // build a model so we know what to show on the login page
+            var vm = BuildRegisterViewModelAsync(returnUrl);
+            return View(vm);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(RegisterInputModel model,string returnUrl = null)
+        {
+            returnUrl = returnUrl ?? Url.Action("Home");
+            if (ModelState.IsValid)
             {
-                // we only have one option for logging in and it's an external provider
-                return RedirectToAction("Challenge", "External", new { provider = vm.ExternalLoginScheme, returnUrl });
+                var user = new ApplicationUser { UserName = model.Username , Email = model.Email };
+                var result = await _userManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var callbackUrl = Url.Action(
+                        action: "ConfirmEmail",
+                        controller: "Account",
+                        values: new { user = user, code = code },
+                        protocol: Request.Scheme);
+
+                    var htmlTemplate = await _botMongoDal.GetTemplateByIdNameAsync("email_confirm_template");
+
+                    var formatHtmlTemplate = htmlTemplate.data.Replace("{0}", model.Username);
+
+                    formatHtmlTemplate = formatHtmlTemplate.Replace("{1}", HtmlEncoder.Default.Encode(callbackUrl));
+
+                    await _emailSender.SendEmailAsync(model.Email, "FlowGraph Confirmation your email", formatHtmlTemplate);
+                    
+                    return View("SuccessRegister");
+
+                    //await _signInManager.SignInAsync(user, isPersistent: false);
+                    //return View(returnUrl);
+                }
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
             }
 
+            var vm = BuildRegisterViewModelAsync(returnUrl);
             return View(vm);
+        }
+
+
+
+        [HttpGet]
+        public async Task<ActionResult> ConfirmEmail(string user, string code)
+        {
+            if (user == null || code == null)
+            {
+                return View("Error");
+            }
+            var resolvedUser = await _userManager.FindByNameAsync(user);
+
+            var result = await _userManager.ConfirmEmailAsync(resolvedUser, code);
+            if (result.Succeeded)
+            {
+                return View("ConfirmEmail");
+            }
+            else
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+            }
+            //AddErrors(result);
+            return View("ConfirmEmail");
         }
 
         /// <summary>
@@ -207,6 +284,16 @@ namespace IdentityServer4.Quickstart.UI
         /*****************************************/
         /* helper APIs for the AccountController */
         /*****************************************/
+
+        private RegisterViewModel BuildRegisterViewModelAsync(string returnUrl)
+        {
+            return new RegisterViewModel
+            {
+                ReturnUrl = returnUrl
+            };
+        }
+
+
         private async Task<LoginViewModel> BuildLoginViewModelAsync(string returnUrl)
         {
             var context = await _interaction.GetAuthorizationContextAsync(returnUrl);
@@ -328,5 +415,7 @@ namespace IdentityServer4.Quickstart.UI
 
             return vm;
         }
+
+
     }
 }

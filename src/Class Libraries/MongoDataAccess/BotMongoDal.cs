@@ -31,6 +31,24 @@ namespace MongoDataAccess
         }
 
 
+
+        public async Task<ResourceTemplate> GetTemplateByIdNameAsync(string idName)
+        {
+            try
+            {
+                var coll = GetCollection<ResourceTemplate>(CollectionNames.IdentityServerResources);
+                var templateItem = await (await coll.FindAsync(_ => true).ConfigureAwait(false)).FirstAsync().ConfigureAwait(false);
+                return templateItem;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, string.Empty);
+                return null;
+            }
+        }
+
+
+
         public async Task<IEnumerable<FlowGraphItem>> GetAllFlowGraphItemAsync()
         {
             try

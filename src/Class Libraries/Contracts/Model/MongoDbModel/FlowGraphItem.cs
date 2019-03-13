@@ -48,6 +48,9 @@ namespace Contracts.Model.MongoDbModel
         [DataMember]
         public string JSON { get; set; }
 
+        [DataMember]
+        public string IdentityName { get; set; }
+
 
     }
 

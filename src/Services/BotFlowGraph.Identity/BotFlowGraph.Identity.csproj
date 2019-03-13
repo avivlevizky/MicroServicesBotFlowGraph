@@ -17,5 +17,35 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.4.4" />
+    <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="1.0.172" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.2" />
+    <PackageReference Include="Sendgrid" Version="9.10.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Views\Account\Register.cshtml.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="wwwroot\css\site.less" />
+    <Content Remove="wwwroot\css\site.min.css" />
+    <Content Remove="wwwroot\lib\bootstrap\css\bootstrap-theme.min.css" />
+    <Content Remove="wwwroot\lib\bootstrap\css\bootstrap.css" />
+    <Content Remove="Areas\Identity\Pages\_ViewImports.cshtml" />
+    <Content Remove="Areas\Identity\Pages\_ValidationScriptsPartial.cshtml" />
+    <Content Remove="Areas\Identity\Pages\Account\Register.cshtml" />
+    <Content Remove="Areas\Identity\Pages\Account\Login.cshtml" />
+    <Content Remove="Areas\Identity\Pages\Account\Logout.cshtml" />
+    <Content Remove="Views\Shared\_CookieConsentPartial.cshtml" />
+    <Content Remove="wwwroot\assets\success.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Services\" />
+    <Folder Include="wwwroot\assets\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Class Libraries\MongoDataAccess\MongoDataAccess.csproj" />
+    <ProjectReference Include="..\..\Class Libraries\Contracts\Contracts.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="wwwroot\assets\success.png" />
   </ItemGroup>
 </Project>

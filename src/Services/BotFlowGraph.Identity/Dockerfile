@@ -6,6 +6,8 @@ EXPOSE 443
 FROM microsoft/dotnet:2.2-sdk AS build
 WORKDIR /src
 COPY ["BotFlowGraph.Identity/BotFlowGraph.Identity.csproj", "BotFlowGraph.Identity/"]
+COPY ["src/Class Libraries/Contracts/Contracts.csproj", "src/Class Libraries/Contracts/"]
+COPY ["src/Class Libraries/MongoDataAccess/MongoDataAccess.csproj", "src/Class Libraries/MongoDataAccess/"]
 RUN dotnet restore "BotFlowGraph.Identity/BotFlowGraph.Identity.csproj"
 COPY . .
 WORKDIR "/src/BotFlowGraph.Identity"

@@ -6,6 +6,7 @@ namespace Contracts.Enums
 {
     public enum CollectionNames
     {
-        DrawFlowGraphs
+        DrawFlowGraphs,
+        IdentityServerResources
     }
 }

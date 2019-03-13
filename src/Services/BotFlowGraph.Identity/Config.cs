@@ -55,7 +55,7 @@ public static class Config
                 new Client
                 {
                     ClientId = "spa",
-                    ClientName = "SPA Client",
+                    ClientName = "FlowGraph Web",
                     ClientUri = "https://localhost:4200",
 
                     AllowedGrantTypes = GrantTypes.Implicit,
@@ -65,7 +65,7 @@ public static class Config
                     {
                         "https://localhost:4200/callback",
                     },
-                    PostLogoutRedirectUris = { "https://localhost:44329/signout-callback-oidc" },
+                    PostLogoutRedirectUris = { "https://localhost:4200/callback" },
                     AllowedCorsOrigins = { "https://localhost:4200" },
                     AllowedScopes = 
                     {

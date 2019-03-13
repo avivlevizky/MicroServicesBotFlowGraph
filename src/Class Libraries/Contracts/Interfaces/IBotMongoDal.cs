@@ -11,5 +11,6 @@ namespace Contracts.Interfaces
         Task<FlowGraphItem> GetFlowGraphItemByNameIDAsync(string nameID);
         Task<bool> InsertFlowGraphItemAsync(FlowGraphItem item);
         Task<bool> UpdateFlowGraphItemAsync(string id, FlowGraphItem item);
+        Task<ResourceTemplate> GetTemplateByIdNameAsync(string idName);
     }
 }

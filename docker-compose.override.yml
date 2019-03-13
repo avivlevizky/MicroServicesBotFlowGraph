@@ -13,8 +13,14 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://0.0.0.0:443;http://0.0.0.0:80
+      - USER_SECRETS_ID=603b5e3d-0807-4a48-b0a7-f5b012d11a9b
+
     ports:
       - "44329:443"
+    volumes:
+      - $APPDATA/Microsoft/UserSecrets/$USER_SECRETS_ID:/root/.microsoft/usersecrets/$USER_SECRETS_ID
+      - $HOME/.microsoft/usersecrets/$USER_SECRETS_ID:/root/.microsoft/usersecrets/$USER_SECRETS_ID
+
   botflowgraph-webapi:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
