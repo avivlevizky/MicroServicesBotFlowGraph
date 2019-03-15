@@ -15,22 +15,8 @@
       //  "AuthenticationProviderKey": "IdentityApiKey",
       //  "AllowedScopes": []
       //}
-    },
-    {
-      "DownstreamPathTemplate": "/{everything}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "botflowgraph-identity",
-          "Port": 80
-        }
-      ],
-      "UpstreamPathTemplate": "/identityService/{everything}"
     }
   ],
   "GlobalConfiguration": {
   }
 }
-
-
-// https://localhost:44328/identityService/.well-known/openid-configuration

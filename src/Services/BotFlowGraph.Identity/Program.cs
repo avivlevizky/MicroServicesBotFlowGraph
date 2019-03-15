@@ -20,12 +20,12 @@ namespace BotFlowGraph.Identity
 
             var host = CreateWebHostBuilder(args).Build();
 
-            if (true)
-            {
-                var config = host.Services.GetRequiredService<IConfiguration>();
-                var connectionString = config.GetConnectionString("DefaultConnection");
-                SeedData.EnsureSeedData(connectionString);
-            }
+            //if (true)
+            //{
+            //    var config = host.Services.GetRequiredService<IConfiguration>();
+            //    var connectionString = config.GetConnectionString("DefaultConnection");
+            //    SeedData.EnsureSeedData(connectionString);
+            //}
 
             host.Run();
         }

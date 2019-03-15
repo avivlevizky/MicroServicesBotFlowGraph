@@ -25,9 +25,7 @@
     }
 
     .modal-confirm h4 {
-        text-align: center;
-        font-size: 36px;
-        margin: 10px 0;
+        font-size: 25px;
     }
 
     .modal-confirm .form-control, .modal-confirm .btn {
@@ -101,4 +99,14 @@
 .trigger-btn {
     display: inline-block;
     margin: 100px auto;
+}
+
+.spinner-border {
+    width: 1.1rem !important;
+    height: 1.1rem !important;
+}
+
+
+.img-fluid {
+    height: 7rem !important;
 }
